@@ -127,6 +127,8 @@ CORS_ORIGIN_WHITELIST = (
     'google.com',
     'localhost:4200',
     'localhost',
-    'statlab.ddns.net'
-    'http://statlab.ddns.net'
+    'star-lab.ddns.net',
+    'http://star-lab.ddns.net',
+    'alimohebbi.github.io',
+
 )
