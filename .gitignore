@@ -1,3 +1,8 @@
+**/__pycache__
+__pycache__
 .idea
 db.sqlite3
 venv
+StarLabServer/media
+production_setting/secret.py
+static
