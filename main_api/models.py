@@ -10,7 +10,7 @@ class News(models.Model):
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
-        return self.news_text[:15]
+        return self.news_text[:100]
 
 
 class People(models.Model):
