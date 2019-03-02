@@ -126,6 +126,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'StarLabServer/media/')
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'localhost:4200',
+    'http://localhost:4200',
     'localhost',
     'star-lab.ddns.net',
     'http://star-lab.ddns.net',
