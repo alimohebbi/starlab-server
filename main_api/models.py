@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 class News(models.Model):
     news_text = models.CharField(max_length=1000)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateField('Publish Date')
 
     def __str__(self):
         return self.news_text[:100]
@@ -28,7 +28,7 @@ class People(models.Model):
     title = models.CharField(max_length=6, choices=TITLE_CHOICES)
     description = models.CharField(max_length=200)
     web_page = models.CharField(max_length=500)
-    join_date = models.DateTimeField('Join Date')
+    join_date = models.DateField('Join Date')
     image = models.ImageField(upload_to='people_image', blank=True, default='people_image/default-pic.jpg')
 
     def __str__(self):
@@ -37,10 +37,6 @@ class People(models.Model):
 
 @receiver(models.signals.post_delete, sender=People)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
-    """
-    Deletes file from filesystem
-    when corresponding `MediaFile` object is deleted.
-    """
     if instance.image and instance.image.name != 'people_image/default-pic.jpg':
         if os.path.isfile(instance.image.path):
             os.remove(instance.image.path)
@@ -48,11 +44,6 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
 
 @receiver(models.signals.pre_save, sender=People)
 def auto_delete_file_on_change(sender, instance, **kwargs):
-    """
-    Deletes old file from filesystem
-    when corresponding `MediaFile` object is updated
-    with new file.
-    """
     if not instance.pk:
         return False
 
@@ -73,12 +64,37 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 class Software(models.Model):
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
-    introduction = models.TextField()
+    introduction = models.TextField(blank=True)
     detail = models.FileField(upload_to='software_detail', blank=True)
     authors = models.ManyToManyField(People, through='SoftwareAuthors')
+    pub_date = models.DateField('Publish Date')
 
     def __str__(self):
         return self.title
+
+
+@receiver(models.signals.post_delete, sender=Software)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.detail:
+        if os.path.isfile(instance.detail.path):
+            os.remove(instance.detail.path)
+
+
+@receiver(models.signals.pre_save, sender=Software)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Software.objects.get(pk=instance.pk).detail
+    except Software.DoesNotExist:
+        return False
+
+    new_file = instance.detail
+    if old_file.name != "":
+        if not old_file == new_file:
+            if os.path.exists(old_file.path):
+                os.remove(old_file.path)
 
 
 class SoftwareAuthors(models.Model):

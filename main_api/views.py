@@ -47,7 +47,7 @@ def publications(request):
 
 
 def software_list(request):
-    soft_list = Software.objects.values()
+    soft_list = Software.objects.order_by('-pub_date').values()
     return JsonResponse(list(soft_list), safe=False)
 
 
