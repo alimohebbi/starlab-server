@@ -1,22 +1,18 @@
 import os
 
-from django.core import serializers
+import bibtexparser
+from bibtexparser.bparser import BibTexParser
+from django.conf import settings
 from django.core.files.storage import default_storage
 from django.db.models import Case, When
-from django.forms import model_to_dict
-from django.http import HttpResponse, JsonResponse, Http404
-from django.conf import settings
-from bibtexparser.bparser import BibTexParser
-import bibtexparser
-
-import json
+from django.http import JsonResponse, Http404
 
 # Create your views here.
 from main_api.models import News, People, Software, SoftwareAuthors
 
 
 def news(request):
-    news_data = News.objects.order_by('-pub_date').values()
+    news_data = News.objects.values()
     return JsonResponse(list(news_data), safe=False)
 
 
@@ -34,16 +30,25 @@ def modify_url(request, objects, key):
     return objects
 
 
+class BibHolder:
+    Bib_Database = None
+    Last_Change_Date = None
+
+
 def publications(request):
-    f = default_storage.open(os.path.join(settings.MEDIA_ROOT, 'bib/biblio.bib'), 'r')
-    bib_str = f.read()
-    f.close()
-    parser = BibTexParser()
-    parser.ignore_nonstandard_types = True
-    parser.homogenize_fields = False
-    parser.common_strings = True
-    bib_database = bibtexparser.loads(bib_str, parser)
-    return JsonResponse(bib_database.entries, safe=False)
+    path = os.path.join(settings.MEDIA_ROOT, 'bib/biblio.bib')
+    last = os.path.getmtime(path)
+    if BibHolder.Last_Change_Date != last:
+        f = default_storage.open(path, 'r')
+        bib_str = f.read()
+        f.close()
+        parser = BibTexParser()
+        parser.ignore_nonstandard_types = True
+        parser.homogenize_fields = False
+        parser.common_strings = True
+        BibHolder.Bib_Database = bibtexparser.loads(bib_str, parser)
+        BibHolder.Last_Change_Date = last
+    return JsonResponse(BibHolder.Bib_Database.entries, safe=False)
 
 
 def software_list(request):
