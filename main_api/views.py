@@ -12,7 +12,7 @@ from main_api.models import News, People, Software, SoftwareAuthors
 
 
 def news(request):
-    news_data = News.objects.values()
+    news_data = News.objects.order_by('-pub_date').values()
     return JsonResponse(list(news_data), safe=False)
 
 
