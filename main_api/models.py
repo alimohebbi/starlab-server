@@ -100,7 +100,9 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 class SoftwareAuthors(models.Model):
     author = models.ForeignKey(People, on_delete=models.CASCADE)
     software = models.ForeignKey(Software, on_delete=models.CASCADE)
-    order = models.IntegerField(blank=False)
+    order = models.IntegerField(blank=False,
+                                help_text='Order of the author in software authors. Pictures will be shown in this '
+                                          'order')
 
     class Meta:
         ordering = ['order', ]
