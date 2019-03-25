@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django import forms
 # Register your models here.
-from main_api.models import News, People, Software, SoftwareAuthors
+from main_api.models import News, People, Software, SoftwareAuthors, Project, Research, CollaborationResearcher, \
+    Collaboration, Highlight
 
 
 class NewsForm(forms.ModelForm):
-    news_text = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
+    text = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
 
     class Meta:
         model = News
@@ -20,7 +21,7 @@ class SoftwareForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
 
     class Meta:
-        model = News
+        model = Software
         fields = '__all__'
 
 
@@ -34,6 +35,40 @@ class SoftwareAdmin(admin.ModelAdmin):
     inlines = (SoftwareAuthorsInline,)
 
 
+class ProjectInline(admin.TabularInline):
+    model = Project
+    extra = 1
+
+
+class ResearchAdmin(admin.ModelAdmin):
+    inlines = (ProjectInline,)
+
+
+class CollaboratorResearcherInline(admin.TabularInline):
+    model = CollaborationResearcher
+    extra = 1
+
+
+class CollaborationAdmin(admin.ModelAdmin):
+    inlines = (CollaboratorResearcherInline,)
+
+
+class HighlightForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
+    subject = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
+
+    class Meta:
+        model = Highlight
+        fields = '__all__'
+
+
+class HighlightAdmin(admin.ModelAdmin):
+    form = HighlightForm
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(People)
 admin.site.register(Software, SoftwareAdmin)
+admin.site.register(Research, ResearchAdmin)
+admin.site.register(Collaboration, CollaborationAdmin)
+admin.site.register(Highlight, HighlightAdmin)

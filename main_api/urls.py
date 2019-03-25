@@ -9,5 +9,8 @@ urlpatterns = [
     path('software/<int:software_id>/', views.software, name='software'),
     path('software/<int:software_id>/authors', views.authors_of_software, name='software_authors'),
     path('software/', views.software_list, name='software_list'),
+    path('researches/', views.researches, name='researches'),
+    path('collaborations/', views.collaborations, name='collaborations'),
+    path('highlights/', views.highlights, name='highlights'),
 
 ]

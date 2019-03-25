@@ -1,17 +1,17 @@
-from django.core.files import File
-from django.db import models
 import os
+
+from django.db import models
 from django.dispatch import receiver
 
 
 # Create your models here.
 
 class News(models.Model):
-    news_text = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000)
     pub_date = models.DateField('Publish Date')
 
     def __str__(self):
-        return self.news_text[:100]
+        return self.text[:100]
 
 
 class People(models.Model):
@@ -21,7 +21,6 @@ class People(models.Model):
         ('phd', 'PhD'),
         ('former', 'Former'),
         ('collab', 'Collaborator'),
-
     )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -114,3 +113,52 @@ class SoftwareAuthors(models.Model):
     def __str__(self):
         return self.author.first_name + " " + self.author.last_name + " is a author of " + self.software.title + (
                 " in position %d" % self.order)
+
+
+class Highlight(models.Model):
+    date = models.DateField()
+    subject = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return self.subject
+
+
+class Research(models.Model):
+    title = models.CharField(max_length=1000)
+    date_added = models.DateField('Date Added')
+
+    def __str__(self):
+        return self.title
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=1000)
+    research = models.ForeignKey(Research, on_delete=models.CASCADE)
+
+
+class Collaboration(models.Model):
+    university = models.CharField(max_length=200)
+    link = models.CharField(max_length=1000)
+    researcher = models.ManyToManyField(People, through='CollaborationResearcher')
+    start_date = models.DateField('Start Date')
+
+    def __str__(self):
+        return self.university
+
+
+class CollaborationResearcher(models.Model):
+    researcher = models.ForeignKey(People, on_delete=models.CASCADE)
+    collaboration = models.ForeignKey(Collaboration, on_delete=models.CASCADE)
+    field = models.CharField(max_length=200)
+    start_date = models.DateField('Start Date')
+
+    class Meta:
+        ordering = ['-start_date', ]
+
+    def __str__(self):
+        return self.researcher.first_name + ' ' + self.researcher.last_name + ' started collaboration in \"' + \
+               self.field + '\" since ' + str(self.start_date)

@@ -8,7 +8,8 @@ from django.db.models import Case, When
 from django.http import JsonResponse, Http404
 
 # Create your views here.
-from main_api.models import News, People, Software, SoftwareAuthors
+from main_api.models import News, People, Software, SoftwareAuthors, Research, Collaboration, CollaborationResearcher, \
+    Highlight
 
 
 class BibHolder:
@@ -17,8 +18,8 @@ class BibHolder:
 
 
 def news(request):
-    news_data = News.objects.order_by('-pub_date').values()
-    return JsonResponse(list(news_data), safe=False)
+    news_list = News.objects.order_by('-pub_date').values()
+    return JsonResponse(list(news_list), safe=False)
 
 
 def people(request):
@@ -77,3 +78,33 @@ def update_bib_holder():
         parser.common_strings = True
         BibHolder.Bib_Database = bibtexparser.loads(bib_str, parser)
         BibHolder.Last_Change_Date = current_last_change
+
+
+def researches(request):
+    researches_query = Research.objects.order_by('-date_added')
+    research_list = researches_query.values()
+    for research_q, research_o in zip(researches_query, research_list):
+        projects = research_q.project_set.all().values()
+        research_o.update({'projects': list(projects)})
+    return JsonResponse(list(research_list), safe=False)
+
+
+def collaborations(request):
+    collaboration_list = Collaboration.objects.all().order_by('-start_date').values()
+    for collaboration_o in collaboration_list:
+        add_researchers_to_collaboration(collaboration_o)
+    return JsonResponse(list(collaboration_list), safe=False)
+
+
+def add_researchers_to_collaboration(collaboration_o):
+    collaboration_o['researchers'] = []
+    collaboration_researcher = CollaborationResearcher.objects.filter(collaboration=collaboration_o['id']) \
+        .order_by('-start_date').values()
+    for obj in collaboration_researcher:
+        researcher = People.objects.filter(pk=obj['researcher_id']).values()[0]
+        collaboration_o['researchers'].append({'field': obj['field'], 'people': researcher})
+
+
+def highlights(request):
+    highlight_list = Highlight.objects.all().values()
+    return JsonResponse(list(highlight_list), safe=False)
