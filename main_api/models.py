@@ -16,15 +16,14 @@ class News(models.Model):
 
 class People(models.Model):
     TITLE_CHOICES = (
-        ('invest', 'Investigator'),
-        ('post', 'Post-doc'),
-        ('phd', 'PhD'),
-        ('former', 'Former'),
-        ('collab', 'Collaborator'),
+        ('researcher', 'Researcher'),
+        ('phd', 'PhD Student'),
+        ('community', 'Star Community'),
+        ('collaborator', 'Collaborator'),
     )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
-    title = models.CharField(max_length=6, choices=TITLE_CHOICES)
+    title = models.CharField(max_length=10, choices=TITLE_CHOICES)
     description = models.CharField(max_length=200)
     web_page = models.CharField(max_length=500)
     join_date = models.DateField('Join Date')
