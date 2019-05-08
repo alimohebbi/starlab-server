@@ -26,7 +26,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['star-lab.ddns.net',
                  'localhost',
                  '127.0.0.1',
-                 'alimohebbi.pythonanywhere.com']
+                 'alimohebbi.pythonanywhere.com',
+                 '195.176.181.46']
 
 # Application definition
 
