@@ -126,10 +126,10 @@ MEDIA_ROOT = '/media/'
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
-    'google.com',
     'localhost:4200',
     'localhost:80',
     'localhost',
+    'http://localhost',
     'star-lab.ddns.net',
     'http://star-lab.ddns.net',
     'alimohebbi.github.io',
