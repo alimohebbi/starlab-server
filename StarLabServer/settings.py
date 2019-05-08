@@ -123,7 +123,7 @@ STATIC_ROOT = '/static/'
 MEDIA_URL = 'htttp://localhost:3000/media/'
 MEDIA_ROOT = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'StarLabServer/media/')
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
