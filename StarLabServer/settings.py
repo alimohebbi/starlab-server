@@ -128,7 +128,7 @@ MEDIA_ROOT = '/media/'
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'localhost:4200',
-    'http://localhost:80',
+    'localhost:80',
     'localhost',
     'star-lab.ddns.net',
     'http://star-lab.ddns.net',
