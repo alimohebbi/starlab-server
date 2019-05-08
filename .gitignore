@@ -7,3 +7,4 @@ StarLabServer/media
 production_setting/secret.py
 static
 **/migrations
+.DS_Store
