@@ -125,12 +125,11 @@ STATIC_ROOT = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'StarLabServer/media/')
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
     'localhost',
-    'star-lab.ddns.net',
     'temp.star.inf.usi.ch',
     'star.inf.usi.ch',
     'alimohebbi.github.io',
