@@ -131,7 +131,8 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:4200',
     'localhost',
     'star-lab.ddns.net',
-    'http://star-lab.ddns.net',
+    'temp.star.inf.usi.ch',
+    'star.inf.usi.ch',
     'alimohebbi.github.io',
 
 )
