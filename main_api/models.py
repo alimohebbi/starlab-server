@@ -19,7 +19,7 @@ class People(models.Model):
         ('researcher', 'Researcher'),
         ('phd', 'PhD Student'),
         ('community', 'Star Community'),
-        ('collaborator', 'Collaborator'),
+        ('collab', 'Collaborator'),
     )
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
