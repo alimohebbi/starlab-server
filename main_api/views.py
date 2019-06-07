@@ -66,7 +66,7 @@ def add_media_url(request, objects, key):
 
 
 def update_bib_holder():
-    path = os.path.join(settings.MEDIA_ROOT, 'bib/biblio.bib')
+    path = os.path.join(settings.MEDIA_ROOT, 'bibliography/bibliography.bib')
     current_last_change = os.path.getmtime(path)
     if BibHolder.Last_Change_Date != current_last_change:
         f = default_storage.open(path, 'r')
