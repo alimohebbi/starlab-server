@@ -13,6 +13,9 @@ class News(models.Model):
     def __str__(self):
         return self.text[:100]
 
+    class Meta:
+        verbose_name_plural = "News"
+
 
 class People(models.Model):
     TITLE_CHOICES = (
@@ -31,6 +34,9 @@ class People(models.Model):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+    class Meta:
+        verbose_name_plural = "People"
 
 
 @receiver(models.signals.post_delete, sender=People)
@@ -69,6 +75,9 @@ class Software(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name_plural = "Software"
 
 
 @receiver(models.signals.post_delete, sender=Software)
@@ -133,6 +142,9 @@ class Research(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name_plural = "Research"
+
 
 class Project(models.Model):
     name = models.CharField(max_length=1000)
@@ -161,3 +173,41 @@ class CollaborationResearcher(models.Model):
     def __str__(self):
         return self.researcher.first_name + ' ' + self.researcher.last_name + ' started collaboration in \"' + \
                self.field + '\" since ' + str(self.start_date)
+
+
+def get_folder_from_software_title(instance, filename):
+    return instance.software.title + "/" + filename
+
+
+class Download(models.Model):
+    software = models.ForeignKey(Software, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=get_folder_from_software_title,
+                            help_text='Refer to the files in html description this way: media/[software title]/[file name]',
+                            blank=True)
+
+    def __str__(self):
+        return self.file.name.split('/')[1]
+
+
+@receiver(models.signals.post_delete, sender=Download)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.file:
+        if os.path.isfile(instance.file.path):
+            os.remove(instance.file.path)
+
+
+@receiver(models.signals.pre_save, sender=Download)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Download.objects.get(pk=instance.pk).file
+    except Download.DoesNotExist:
+        return False
+
+    new_file = instance.file
+    if old_file.name != "":
+        if not old_file == new_file:
+            if os.path.exists(old_file.path):
+                os.remove(old_file.path)

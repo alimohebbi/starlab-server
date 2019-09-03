@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 # Register your models here.
 from main_api.models import News, People, Software, SoftwareAuthors, Project, Research, CollaborationResearcher, \
-    Collaboration, Highlight
+    Collaboration, Highlight, Download
 
 
 class NewsForm(forms.ModelForm):
@@ -30,9 +30,14 @@ class SoftwareAuthorsInline(admin.TabularInline):
     extra = 1
 
 
+class DownloadInline(admin.TabularInline):
+    model = Download
+    extra = 1
+
+
 class SoftwareAdmin(admin.ModelAdmin):
     form = SoftwareForm
-    inlines = (SoftwareAuthorsInline,)
+    inlines = (SoftwareAuthorsInline, DownloadInline)
 
 
 class ProjectInline(admin.TabularInline):
