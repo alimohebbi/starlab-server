@@ -176,13 +176,14 @@ class CollaborationResearcher(models.Model):
 
 
 def get_folder_from_software_title(instance, filename):
-    return instance.software.title + "/" + filename
+    return "downloads/" + instance.software.title + "/" + filename
 
 
 class Download(models.Model):
     software = models.ForeignKey(Software, on_delete=models.CASCADE)
     file = models.FileField(upload_to=get_folder_from_software_title,
-                            help_text='Refer to the files in html description this way: media/[software title]/[file name]',
+                            help_text='Refer to the files in html description this way: media/[downloads]/[software '
+                                      'title]/[file name]',
                             blank=True)
 
     def __str__(self):
