@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 # Register your models here.
 from main_api.models import News, People, Software, SoftwareAuthors, Project, Research, CollaborationResearcher, \
-    Collaboration, Highlight, Download
+    Collaboration, Highlight, Download,Openingf
 
 
 class NewsForm(forms.ModelForm):
@@ -28,6 +28,17 @@ class SoftwareForm(forms.ModelForm):
 class SoftwareAuthorsInline(admin.TabularInline):
     model = SoftwareAuthors
     extra = 1
+
+class openingForm(forms.ModelForm):
+    desc = forms.CharField(widget=forms.Textarea, help_text='Note: You can enter text and HTML tags')
+
+    class Meta:
+        model = Openingf
+        fields = '__all__'
+
+
+class openingAdmin(admin.ModelAdmin):
+    form = openingForm
 
 
 class DownloadInline(admin.TabularInline):
@@ -77,3 +88,5 @@ admin.site.register(Software, SoftwareAdmin)
 admin.site.register(Research, ResearchAdmin)
 admin.site.register(Collaboration, CollaborationAdmin)
 admin.site.register(Highlight, HighlightAdmin)
+admin.site.register(Openingf,openingAdmin)
+

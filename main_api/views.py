@@ -9,7 +9,7 @@ from django.http import JsonResponse, Http404
 
 # Create your views here.
 from main_api.models import News, People, Software, SoftwareAuthors, Research, Collaboration, CollaborationResearcher, \
-    Highlight
+    Highlight,Openingf
 
 
 class BibHolder:
@@ -88,6 +88,10 @@ def researches(request):
         research_o.update({'projects': list(projects)})
     return JsonResponse(list(research_list), safe=False)
 
+
+def openingview(request):
+    opening_list = Openingf.objects.all().values()
+    return JsonResponse(list(opening_list), safe=False)
 
 def collaborations(request):
     collaboration_list = Collaboration.objects.all().order_by('-start_date').values()
