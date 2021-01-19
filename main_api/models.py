@@ -151,6 +151,20 @@ class Project(models.Model):
     research = models.ForeignKey(Research, on_delete=models.CASCADE)
 
 
+class Opening(models.Model):
+    title = models.CharField(max_length=1000)
+    desc = models.CharField(max_length=1000)
+    count = models.IntegerField()
+    date = models.DateField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "Opening"
+        ordering = ['-date']
+
+
 class Collaboration(models.Model):
     university = models.CharField(max_length=200)
     link = models.CharField(max_length=1000)
