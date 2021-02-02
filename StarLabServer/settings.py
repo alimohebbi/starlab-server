@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['temp.star.inf.usi.ch',
                  'alimohebbi.pythonanywhere.com',
                  '195.176.181.46',
                  'sit.org',
-                 'http://6a981112dcea.ngrok.io']
+                 '6a981112dcea.ngrok.io']
 
 # Application definition
 
