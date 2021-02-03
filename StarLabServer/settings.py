@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['temp.star.inf.usi.ch',
                  'alimohebbi.pythonanywhere.com',
                  '195.176.181.46',
                  'sit.org',
-                 'afbe30203b74.ngrok.io']
+                 'f83aa7811131.ngrok.io']
 
 # Application definition
 
@@ -139,6 +139,6 @@ CORS_ORIGIN_WHITELIST = (
     'star.inf.usi.ch',
     'alimohebbi.github.io',
     'sit.org',
-    'afbe30203b74.ngrok.io'
+    'f83aa7811131.ngrok.io'
 
 )
