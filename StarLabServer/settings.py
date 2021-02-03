@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = KEY
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['temp.star.inf.usi.ch',
                  'star.inf.usi.ch',
@@ -29,8 +29,7 @@ ALLOWED_HOSTS = ['temp.star.inf.usi.ch',
                  '127.0.0.1',
                  'alimohebbi.pythonanywhere.com',
                  '195.176.181.46',
-                 'sit.org',
-                 'f83aa7811131.ngrok.io']
+                 'sit.org']
 
 # Application definition
 
@@ -139,6 +138,4 @@ CORS_ORIGIN_WHITELIST = (
     'star.inf.usi.ch',
     'alimohebbi.github.io',
     'sit.org',
-    'f83aa7811131.ngrok.io'
-
 )

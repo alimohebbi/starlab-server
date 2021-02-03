@@ -154,7 +154,6 @@ class Project(models.Model):
 class Opening(models.Model):
     title = models.CharField(max_length=1000)
     desc = models.CharField(max_length=1000)
-    count = models.IntegerField()
     date = models.DateField()
 
     def __str__(self):
